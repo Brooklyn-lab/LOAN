@@ -1,0 +1,81 @@
+.about {
+   &__body {
+      position: relative;
+
+      &::before {
+         position: absolute;
+         content: url("../img/ellipse-blue.png");
+         left: -200px;
+         top: 0;
+         z-index: -1;
+         width: 640px;
+         height: 640px;
+      }
+
+      &::after {
+         position: absolute;
+         content: url("../img/ellipse-green.png");
+         right: 150px;
+         bottom: 100px;
+         z-index: -1;
+         width: 640px;
+         height: 640px;
+      }
+   }
+
+   &__title {
+      &::before {
+         content: "Find out more";
+      }
+   }
+
+   &__text {
+      @include content-text;
+      color: $black;
+      max-width: 420px;
+   }
+
+   &__brand {
+      color: #999;
+   }
+
+   &__cards {
+      margin-left: 145px;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 20px;
+   }
+}
+
+.about-card {
+   max-width: 315px;
+   padding: 45px 20px 50px;
+   border: 1px solid $grey;
+   border-radius: 2px;
+   margin-top: 60px;
+
+   &_aside {
+      margin-left: 55px;
+      margin-right: 55px;
+   }
+
+   &:nth-child(2n) {
+      border-right: 0;
+      border-left: 0;
+      border-right: 0;
+   }
+
+   &__icon-wrapper {
+      margin-bottom: 120px;
+   }
+
+   &__title {
+      @include content-title;
+      color: $blue1;
+      margin-bottom: 20px;
+   }
+
+   &__text {
+      @include content-text;
+   }
+}

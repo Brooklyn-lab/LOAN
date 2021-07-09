@@ -1,0 +1,237 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: $black;
+  scroll-behavior: smooth;
+  z-index: 1;
+  background: $white3;
+}
+ul,
+ol,
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:focus,
+:active {
+  outline: none;
+}
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  font-weight: inherit;
+  font-size: inherit;
+}
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus input:-webkit-autofill,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  // border: 0;
+  // -webkit-text-fill-color: $gray2;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+  // background: -webkit-linear-gradient(
+  //   top,
+  //   rgba(255, 255, 255, 0) 0%,
+  //   rgba(0, 174, 255, 0.04) 50%,
+  //   rgba(255, 255, 255, 0) 51%,
+  //   rgba(0, 174, 255, 0.03) 100%
+  // );
+}
+
+input,
+textarea {
+  border-radius: 50px;
+  background: $white;
+  resize: none;
+  padding: 30px 25px;
+  color: $black;
+  @include content-text;
+  border: 1px solid transparent;
+
+  &::placeholder {
+    color: $black;
+    @include content-text;
+  }
+
+  &:focus-visible {
+    outline: none;
+    border: 1px solid $white2;
+    color: $black;
+  }
+}
+
+label {
+  cursor: pointer;
+}
+
+label.error {
+  margin-top: 5px;
+  color: $red;
+}
+
+.checkbox {
+  position: relative;
+  cursor: pointer;
+
+  &__check {
+    left: 0px;
+    bottom: 29%;
+    opacity: 0;
+    position: absolute;
+    z-index: 999;
+    width: 100px;
+    height: 20px;
+  }
+
+  &__box {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 1px solid $black;
+    border-radius: 5px;
+    margin-top: 6px;
+  }
+
+  &__text {
+    @include content-text;
+    color: $black;
+    padding-left: 24px;
+    display: inline-block;
+    text-align: initial;
+  }
+}
+
+input[type="checkbox"]:checked + .checkbox__box {
+  background: url("../img/check.png") no-repeat center;
+  border: 1px solid $blue1;
+}
+
+$minWidth: 320px;
+$maxWidth: 1920;
+$maxWidthContainer: 1230;
+$md1: $maxWidthContainer + 15;
+$md2: 991.98;
+$md3: 767.98;
+$md4: 479.98;
+
+.container {
+  max-width: $maxWidthContainer + px;
+  padding: 0 15px;
+  margin: 0 auto;
+  width: 100%;
+
+  @media (max-width: $md1+px) {
+    max-width: 992px;
+  }
+  @media (max-width: $md2+px) {
+    max-width: 768px;
+  }
+  @media (max-width: $md3+px) {
+    max-width: 768px;
+    padding: 0 10px;
+  }
+
+  @media (max-width: $md4+px) {
+    max-width: 410px;
+  }
+}
+
+.content-padding {
+  @include content-padding;
+}
+
+.title {
+  @include main-title;
+  color: $blue2;
+  margin-bottom: 80px;
+  position: relative;
+  z-index: 0;
+
+  &::before {
+    position: absolute;
+    content: "";
+    color: transparent;
+    -webkit-text-stroke: 0.5px $green;
+    -moz-text-stroke: 0.5px $green;
+    -ms-text-stroke: 0.5px $green;
+    left: 3px;
+    top: 2px;
+    z-index: -1;
+  }
+}
+
+@supports (-webkit-text-stroke: 1px $blue2) {
+  .title__transperent {
+    display: block;
+    margin: 10px 0 0 145px;
+    color: transparent;
+    -webkit-text-stroke: 1px $blue2;
+    -moz-text-stroke: 1px $blue2;
+    -ms-text-stroke: 1px $blue2;
+  }
+}
+
+.btn {
+  background: #039ae2;
+  border: 1px solid transparent;
+  @include fonts(18px, 21px, 600);
+  transition: 0.3s;
+  height: 42px;
+  max-width: 220px;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  color: $white;
+  transition: all 0.3s ease 0s;
+
+  &:hover,
+  &:focus {
+    color: $white;
+    background: $blue1;
+    border: 1px solid transparent;
+  }
+}

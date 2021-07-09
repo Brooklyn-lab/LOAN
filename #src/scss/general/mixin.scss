@@ -1,0 +1,223 @@
+// colors
+$white: #fafafa;
+$white2: #b4e6fe;
+$white3: #fff;
+$green: #03e69f;
+$blue1: #039ae2;
+$blue2: #0378ff;
+$red: #fe7a7a;
+$grey: #575757;
+$black: #313131;
+
+// container
+$maxWidth: 1920;
+$maxWidthContainer: 1170px;
+
+@mixin adaptiv-value($property, $startSize, $minSize, $type) {
+  $addSize: $startSize - $minSize;
+  @if $type==1 {
+    //Только если меньше контейнера
+    #{$property}: $startSize + px;
+    @media (max-width: #{$maxWidthContainer + px}) {
+      #{$property}: calc(#{minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidthContainer - 320}));
+    }
+  } @else if $type==2 {
+    //Только если больше контейнера
+    #{$property}: $startSize + px;
+    @media (min-width: #{$maxWidthContainer + px}) {
+      #{$property}: calc(#{minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth - 320}));
+    }
+  } @else {
+    //Всегда
+    #{$property}: calc(#{$minSize + px} + #{$addSize} * ((100vw - 320px) / #{$maxWidth - 320}));
+  }
+}
+
+@mixin fonts($font-size, $line-height, $font-weight) {
+  font-size: $font-size;
+  line-height: $line-height / $font-size * 100%;
+  font-weight: $font-weight;
+}
+
+// fonts
+@mixin font($font_name, $file_name, $weight, $style) {
+  @font-face {
+    font-family: $font_name;
+    font-display: swap;
+    src: url("../fonts/#{$file_name}.woff") format("woff"), url("../fonts/#{$file_name}.woff2") format("woff2");
+    font-weight: #{$weight};
+    font-style: #{$style};
+  }
+}
+
+// h1
+@mixin main-title {
+  font-family: "Ubuntu", sans-serif;
+  @include fonts(64px, 57px, 500);
+
+  @media screen and (max-width: 768px) {
+    font-size: 48px;
+  }
+
+  @media screen and (max-width: 576px) {
+    font-size: 30px;
+  }
+}
+
+// h2
+@mixin main-title-small {
+  @include fonts(30px, 36px, 400);
+
+  @media screen and (max-width: 768px) {
+    font-size: 36px;
+  }
+
+  @media screen and (max-width: 576px) {
+    font-size: 26px;
+  }
+}
+
+// subtitle
+@mixin main-subtitle {
+  @include fonts(22px, 28px, 600);
+
+  @media screen and (max-width: 992px) {
+    font-size: 36px;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
+
+  @media screen and (max-width: 576) {
+    font-size: 20px;
+  }
+}
+
+// h3
+@mixin content-title {
+  @include fonts(24px, 27px, 600);
+
+  @media screen and (max-width: 992px) {
+    font-size: 28px;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
+
+  @media screen and (max-width: 576) {
+    font-size: 22px;
+  }
+}
+
+// text
+@mixin content-text {
+  @include fonts(18px, 25px, 400);
+
+  @media screen and (max-width: 992px) {
+    font-size: 21px;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 18px;
+  }
+}
+
+@mixin link {
+  @include fonts(12px, 11px, 600); 
+}
+
+// text {strong}
+// @mixin content-text-strong {
+//   @include fonts(24px, 29px, 600);
+
+//   @media screen and (max-width: 992px) {
+//     font-size: 21px;
+//   }
+
+//   @media screen and (max-width: 768px) {
+//     font-size: 16px;
+//   }
+
+//   @media screen and (max-width: 576) {
+//   }
+// }
+
+// menu items
+// @mixin menu-item {
+//   @include fonts(20px, 24px, 400);
+
+//   @media screen and (max-width: 768px) {
+//     font-size: 18px;
+//   }
+// }
+
+// padding/margin
+
+@mixin content-padding {
+  padding: 200px 0 0;
+
+  // @media screen and (max-width: 992px) {
+  //   padding: 110px 0;
+  // }
+
+  // @media screen and (max-width: 768px) {
+  //   padding: 70px 0;
+  // }
+
+  // @media screen and (max-width: 576px) {
+  //   padding: 32px 0;
+  // }
+}
+
+// buttons
+@mixin button {
+  border: 2px solid $white;
+  background: $blue1;
+  border-radius: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 15px;
+  transition: 0.25s ease-in-out;
+  @include fonts(15px, 13.5px, 600);
+  color: $black;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background: $blue1;
+    border: 2px solid transparent;
+    color: $white;
+
+    span {
+      color: $white;
+    }
+    svg {
+      stroke: $white;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 18px;
+  }
+
+  @media screen and (max-width: 576px) {
+    font-size: 16px;
+  }
+}
+
+@mixin height {
+  height: 90px;
+
+  @media screen and (max-width: 992px) {
+    height: 70px;
+  }
+
+  @media screen and (max-width: 768px) {
+    height: 60px;
+  }
+}
