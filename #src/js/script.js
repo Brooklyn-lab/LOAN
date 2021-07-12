@@ -34,6 +34,20 @@ jQuery(document).ready(function () {
          .slideUp();
    });
 
+   // -------------------------------------------------
+
+   $('a[href*="#"]').on('click', function (e) {
+      e.preventDefault();
+
+      $('html, body').animate(
+         {
+            scrollTop: $($(this).attr('href')).offset().top,
+         },
+         500,
+         'linear',
+      );
+   });
+
    // ----------- FORM --------------------------------
 
    const form = $('.form');
@@ -44,7 +58,7 @@ jQuery(document).ready(function () {
    const buttonReset = $('#buttonReset');
 
    let steps = 1;
-   let date = {
+   let data = {
       personalizedValue = '',
       nameValue = '',
       lastNameValue = '',
@@ -59,12 +73,26 @@ jQuery(document).ready(function () {
 
    buttonReset.hide();
 
+   $.validator.addMethod(
+      "regex",
+      function (value, element, regexp) {
+         var re = new RegExp(regexp);
+         return this.optional(element) || re.test(value);
+      },
+      "Please check your input."
+   );
+
    buttonReset.click(function () {
-      form.trigger('reset');
+      formContent.html(step1())
+      steps = 1;
+      buttonPrev.show()
+      buttonReset.hide()
+      buttonNext.show()
    })
 
-   const formValidate = function () {
-      form.validate({
+   function valEl(el) {
+
+      el.validate({
          rules: {
             name: {
                required: true,
@@ -93,19 +121,70 @@ jQuery(document).ready(function () {
                email: true
             }
          },
+
+         // Начинаем проверку id="" формы
+         submitHandler: function (form) {
+            $('.preloader').fadeIn();
+            var $form = $(form);
+            var $formId = $(form).attr('id');
+            switch ($formId) {
+               // Если у формы id="goToNewPage" - делаем:
+               case 'goToNewPage':
+                  $.ajax({
+                     type: 'POST',
+                     url: $form.attr('action'),
+                     data: $form.serialize(),
+                  })
+                     .always(function (response) {
+                        //ссылка на страницу "спасибо" - редирект
+                        location.href = 'https://wayup.in/lm/landing-page-marathon/success';
+                        //отправка целей в Я.Метрику и Google Analytics
+                        ga('send', 'event', 'masterklass7', 'register');
+                        yaCounter27714603.reachGoal('lm17lead');
+                     });
+                  break;
+               // Если у формы id="popupResult" - делаем:
+               case 'popupResult':
+                  $.ajax({
+                     type: 'POST',
+                     url: $form.attr('action'),
+                     data: $form.serialize(),
+                  })
+                     .always(function (response) {
+                        setTimeout(function () {
+                           $('.preloader').fadeOut();
+                           $form.trigger('reset');
+                        }, 400);
+                        // setTimeout(function () {
+                        //    $('#overlay').fadeIn();
+
+                        //    //строки для остлеживания целей в Я.Метрике и Google Analytics
+                        // }, 1100);
+                        // $('#overlay').on('click', function (e) {
+                        //    $(this).fadeOut();
+                        // });
+
+                     });
+                  break;
+            }
+            return false;
+         }
       })
    }
 
-   formValidate();
+   // Запускаем механизм валидации форм, если у них есть класс .js-form
+   $('.js-form').each(function () {
+      valEl($(this));
+   });
 
    const addCheckInput = function () {
       let allInputs = $('.form__wrapper').find('input');
       $.each(allInputs, function (index, value) {
-         if ($(this).attr('data-value') == date.personalizedValue) {
+         if ($(this).attr('data-value') == data.personalizedValue) {
             $(this).attr('checked', '')
-         } else if ($(this).attr('data-value') == date.creditsValue) {
+         } else if ($(this).attr('data-value') == data.creditsValue) {
             $(this).attr('checked', '')
-         } else if ($(this).attr('data-value') == date.employmentValue) {
+         } else if ($(this).attr('data-value') == data.employmentValue) {
             $(this).attr('checked', '')
          }
       })
@@ -158,7 +237,6 @@ jQuery(document).ready(function () {
             <span class="form__text">More than €25,000</span>
          </label>
       </div>
-      <button class="form__button-next">Continue</button>
    `
 
    const step2 = () =>
@@ -168,7 +246,6 @@ jQuery(document).ready(function () {
          <input type="text" name='name' placeholder='First name' class='form__input' require>
          <input type="text" name='lastName' placeholder='Last name' class='form__input' require>
       </div>
-      <button class="form__button-next">Continue</button>
    `
 
    const step3 = () =>
@@ -177,7 +254,6 @@ jQuery(document).ready(function () {
             <input id='idNumber' type="number" name='idNumber' placeholder='ID-number' class='form__input' require>
             <input type="text" id='date' name='birthDate' placeholder='Date of birth' class='form__input' require>
          </div>
-         <button class="form__button-next">Continue</button>
       `
 
    const step4 = () =>
@@ -185,7 +261,7 @@ jQuery(document).ready(function () {
          <p class="survey__title">Credit score</p>
          <div class='form__wrapper'>
             <label for="four-btn" class="form__radio-btn">
-               <input type="radio" name='credits' checked id="four-btn" data-value='<720'>
+               <input type="radio" name='credits' id="four-btn" data-value='<720'>
                <span class="form__circle"></span>
                <span class="form__text">Excellent (720-850)</span>
             </label>
@@ -205,7 +281,6 @@ jQuery(document).ready(function () {
                <span class="form__text">Poor (0-639)</span>
             </label>
          </div>
-         <button class="form__button-next">Continue</button>
       `
 
    const step5 = () =>
@@ -213,7 +288,7 @@ jQuery(document).ready(function () {
          <p class="survey__title">Employment status</p>
          <div class='form__wrapper'>
             <label for="eight-btn" class="form__radio-btn">
-               <input type="radio" checked name='employment' id="eight-btn" data-value='full time'>
+               <input type="radio" name='employment' id="eight-btn" data-value='full time'>
                <span class="form__circle"></span>
                <span class="form__text">Full Time</span>
             </label>
@@ -238,7 +313,6 @@ jQuery(document).ready(function () {
                <span class="form__text">Other</span>
             </label>
          </div>   
-         <button class="form__button-next">Continue</button>
       `
 
    const step6 = () =>
@@ -247,7 +321,6 @@ jQuery(document).ready(function () {
          <div class='form__wrapper'>
             <input id='preTax' type="number" name='preTax' placeholder='€ 90.000' class='form__input' require> 
          </div>
-         <button class="form__button-next">Continue</button>
       `
 
    const step7 = () =>
@@ -255,21 +328,41 @@ jQuery(document).ready(function () {
          <p class="survey__title">How do we contact you?</p>
          <div class='form__wrapper'>
             <input type="email" name='email' placeholder='E-mail' class='form__input' require>
-            <input type="tel" id='phone' name='telephone' placeholder='+1 201-555-0123' class='form__input' require>
+            <input type="tel" id='phone' name='telephone' class='form__input' require>
+
+            <div class="form__checkbox-wrapper">
+               <label class="form__checkbox checkbox">
+                  <input type="checkbox" class="checkbox__check" name="checkbox1" require>
+                  <span class="checkbox__box"></span>
+                  <span class="checkbox__text">I confirm that I have read and accept the general conditions , the privacy policy and the cookie policy</span>
+               </label>
+
+               <label class="form__checkbox checkbox">
+                  <input type="checkbox" class="checkbox__check" name="checkbox2" require>
+                  <span class="checkbox__box"></span>
+                  <span class="checkbox__text">I consent to receive communications, and offers of products and services from Company</span>
+               </label>
+            </div>
          </div>
-         <button class="form__button-next">Continue</button>
       `
 
    const step8 = () =>
       `
-      <p class="survey__title">Thank you for filling out the form!</p>
-      <p class="survey__title">We’ll send you an email with loan-information in 24h at the email address you provided. </p>
-      <p>Respectfully, The <span>[Your Company]</span> Team</p>
+      <p class="form__thank">Thank you for filling out the form!</p>
+      <p class="form__thank-text">We’ll send you an email with loan-information in 24h at the email address you provided. </p>
+      <p class="form__thank-text">Respectfully, The <span>[Your Company]</span> Team</p>
       `
 
    // Показывает изначально 1й степ.
    if ($('input[name=credits-btn]:checked').length === 0) {
       formContent.html(step1())
+   }
+
+   const country = () => {
+      $("#phone").intlTelInput({
+         nationalMode: false,
+         utilsScript: '/libs/utils.min.js'
+      });
    }
 
    let inputValue = (name) => $(`input[name=${name}]`).val();
@@ -282,54 +375,57 @@ jQuery(document).ready(function () {
       event.preventDefault();
 
       if (steps === 1 && inputCheckedLength('personalized')) {
-         (() => date.personalizedValue = inputCheckedValue('personalized'))();
+         (() => data.personalizedValue = inputCheckedValue('personalized'))();
          countUp()
          formContent.html(step2())
-         $(`input[name=name]`).val(`${date.nameValue}`)
-         $(`input[name=lastName]`).val(`${date.lastNameValue}`)
+         $(`input[name=name]`).val(`${data.nameValue}`)
+         $(`input[name=lastName]`).val(`${data.lastNameValue}`)
       } else if (steps === 2 && inputValueLength('name') && inputValueLength('lastName')) {
          (() => {
-            date.nameValue = inputValue('name');
-            date.lastNameValue = inputValue('lastName');
+            data.nameValue = inputValue('name');
+            data.lastNameValue = inputValue('lastName');
          })();
          countUp()
          formContent.html(step3())
-         $('#date').mask('99/99/99')
-         $(`input[name=idNumber]`).val(`${date.idNumberValue}`)
-         $(`input[name=birthDate]`).val(`${date.birthDateValue}`)
+         formContent.toggleClass('no-title')
+         $('#date').mask('99/99/9999')
+         $(`input[name=idNumber]`).val(`${data.idNumberValue}`)
+         $(`input[name=birthDate]`).val(`${data.birthDateValue}`)
       } else if (steps === 3 && inputValueLength('idNumber') && inputValueLength('birthDate')) {
          (() => {
-            date.idNumberValue = inputValue('idNumber');
-            date.birthDateValue = inputValue('birthDate');
+            data.idNumberValue = inputValue('idNumber');
+            data.birthDateValue = inputValue('birthDate');
          })()
          countUp()
          formContent.html(step4())
+         formContent.toggleClass('no-title')
       } else if (steps === 4 && inputCheckedLength('credits')) {
-         (() => date.creditsValue = inputCheckedValue('credits'))()
+         (() => data.creditsValue = inputCheckedValue('credits'))()
          countUp()
          formContent.html(step5())
       } else if (steps === 5 && inputCheckedLength('employment')) {
-         (() => date.employmentValue = inputCheckedValue('employment'))()
+         (() => data.employmentValue = inputCheckedValue('employment'))()
          countUp()
          formContent.html(step6())
-         $(`input[name=preTax]`).val(`${date.preTaxValue}`)
+         $(`input[name=preTax]`).val(`${data.preTaxValue}`)
       } else if (steps === 6 && inputValueLength('preTax')) {
-         (() => date.preTaxValue = inputValue('preTax'))()
+         (() => data.preTaxValue = inputValue('preTax'))()
          countUp()
          formContent.html(step7())
-         $('#phone').mask('+9 (999) 999-99-99')
-         $(`input[name=email]`).val(`${date.emailValue}`)
-         $(`input[name=telephone]`).val(`${date.telephoneValue}`)
-      } else if (steps === 7 && inputValueLength('email') && inputValueLength('telephone')) {
+         country()
+         // $('#phone').mask('+9 (999) 999-99-99')
+         $(`input[name=email]`).val(`${data.emailValue}`)
+         $(`input[name=telephone]`).val(`${data.telephoneValue}`)
+      } else if (steps === 7 && inputValueLength('email') && inputValueLength('telephone') && inputCheckedLength('checkbox1') && inputCheckedLength('checkbox2')) {
          (() => {
-            date.emailValue = inputValue('email');
-            date.telephoneValue = inputValue('telephone');
+            data.emailValue = inputValue('email');
+            data.telephoneValue = inputValue('telephone');
          })()
          countUp()
-         console.log(date)
          formContent.html(step8())
          buttonPrev.hide()
          buttonReset.show()
+         buttonNext.hide()
       }
    })
 
@@ -346,15 +442,17 @@ jQuery(document).ready(function () {
          case 3: {
             countDown()
             formContent.html(step2())
-            $(`input[name=name]`).val(`${date.nameValue}`)
-            $(`input[name=lastName]`).val(`${date.lastNameValue}`)
+            formContent.toggleClass('no-title')
+            $(`input[name=name]`).val(`${data.nameValue}`)
+            $(`input[name=lastName]`).val(`${data.lastNameValue}`)
             break;
          }
          case 4: {
             countDown()
             formContent.html(step3())
-            $(`input[name=idNumber]`).val(`${date.idNumberValue}`)
-            $(`input[name=birthDate]`).val(`${date.birthDateValue}`)
+            formContent.toggleClass('no-title')
+            $(`input[name=idNumber]`).val(`${data.idNumberValue}`)
+            $(`input[name=birthDate]`).val(`${data.birthDateValue}`)
             break;
          }
          case 5: {
@@ -372,7 +470,7 @@ jQuery(document).ready(function () {
          case 7: {
             countDown()
             formContent.html(step6())
-            $(`input[name=preTax]`).val(`${date.preTaxValue}`)
+            $(`input[name=preTax]`).val(`${data.preTaxValue}`)
             break;
          }
          case 8: {
@@ -380,8 +478,9 @@ jQuery(document).ready(function () {
             formContent.html(step7())
             buttonReset.hide()
             buttonPrev.show()
-            $(`input[name=email]`).val(`${date.emailValue}`)
-            $(`input[name=telephone]`).val(`${date.telephoneValue}`)
+            buttonNext.show()
+            $(`input[name=email]`).val(`${data.emailValue}`)
+            $(`input[name=telephone]`).val(`${data.telephoneValue}`)
             break;
          }
       }

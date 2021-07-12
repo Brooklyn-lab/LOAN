@@ -1,6 +1,6 @@
 .preview {
    background: url("../img/fullscreen1.jpg") no-repeat center/cover;
-   margin: 0 60px;
+   margin: 0 60px 100px;
 
    &__body {
       max-width: 1115px;
@@ -27,9 +27,6 @@
    &:last-child {
       background: rgba(3, 154, 226, 0.55);
       backdrop-filter: blur(12px);
-   }
-
-   &__body {
    }
 
    &__number {

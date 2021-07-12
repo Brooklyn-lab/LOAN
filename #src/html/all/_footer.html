@@ -2,17 +2,56 @@
    <div class="container">
       <div class="footer__body">
          <div class="footer__header">
-            <a href="./home.html" class="footer__logo">
-
+            <a href="./index.html" class="footer__logo">
+               <img src="./img/logo.svg" width="146" height="43" alt="Loan Banking logo" >
             </a>
-            <div class="footer__social social">
-            </div>
+
+            <ul class="footer__navigation @@if(hide==1){hide}">
+               <li class="footer__item"><a class="footer__link" href="@@link">HOME</a></li>
+               <li class="footer__item"><a class="footer__link" href="#loan">LOAN</a></li>
+               <li class="footer__item"><a class="footer__link" href="#survey">CONTACT US</a></li>
+            </ul>
          </div>
 
          <div class="footer__content">
+            <article class="foot-card">
+               <div class="foot-card__header">
+                  <img src="./img/logo.svg" width="146" height="43" alt="Loan Banking logo" alt="Loan banking logo" class="foot-card__logo">
+                  <p class="foot-card__title">Car Loan</p>
+               </div>
+               <p class="foot-card__text">Check out the complete list of our affiliates within Rocket Companies</p>
+            </article>
+            <article class="foot-card">
+               <div class="foot-card__header">
+                  <img src="./img/logo.svg" width="146" height="43" alt="Loan Banking logo" alt="Loan banking logo" class="foot-card__logo">
+                  <p class="foot-card__title">Long-term Loan</p>
+               </div>
+               <p class="foot-card__text">Get a real estate agent handpicked for you and search the latest home listings</p>
+            </article>
+            <article class="foot-card">
+               <div class="foot-card__header">
+                  <img src="./img/logo.svg" width="146" height="43" alt="Loan Banking logo" alt="Loan banking logo" class="foot-card__logo">
+                  <p class="foot-card__title">Mortgage Loan</p>
+               </div>
+               <p class="foot-card__text">Buy a home, refinance or manage your mortgage online with America’s largest mortgage lender</p>
+            </article>
          </div>
 
-         <p class="footer__policy">&copy; 2021 Global Lead Solutions Inc. All Rights Reserved | Privacy Policy</p>
+         <div class="footer__policy foot-policy">
+            <p class="foot-policy__copyright">Copyright &copy; 2021</p>
+
+            <ul class="foot-policy__wrapper">
+               <li class="foot-policy__item">
+                  <a href="./privacy-policy.html" class="foot-policy__link">Privacy Policy</a>
+               </li>
+               <li class="foot-policy__item">
+                  <a href="./conditions.html" class="foot-policy__link">Terms and Conditions</a>
+               </li>
+               <li class="foot-policy__item">
+                  <a href="./GDPR.html" class="foot-policy__link">GDPR</a>
+               </li>
+            </ul>
+         </div>
       </div>
    </div>
 </footer>

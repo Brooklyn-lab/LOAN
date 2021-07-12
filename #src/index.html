@@ -6,14 +6,14 @@
    @@include('./html/all/_loader.html')
 
    <main class="main-wrapper">
-      @@include('./html/all/_header.html', {'link':'0'})
+      @@include('./html/all/_header.html', {'link':'#home', 'hide':'0'})
       @@include('./html/all/_preview.html')
       @@include('./html/_about.html')
       @@include('./html/_should.html')
       @@include('./html/_survey.html')
    </main>
 
-   @@include('./html/all/_footer.html')
+   @@include('./html/all/_footer.html', {'link':'#home', 'hide':'0'})
 
    @@include('./html/all/_scripts.html')
 </body>

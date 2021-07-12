@@ -1,6 +1,7 @@
 .survey {
    background: url("../img/fullscreen2.jpg") no-repeat center/cover;
    padding: 85px 0;
+   margin: 100px 60px 120px;
 
    &__wrapper {
       background: rgba(255, 255, 255, 0.8);
@@ -8,8 +9,7 @@
       border-radius: 14px;
       padding: 35px 40px 30px;
       max-width: 480px;
-      min-height: 575px;
-      max-height: 575px;
+      min-height: 608px;
    }
 
    &__body {
@@ -18,19 +18,16 @@
    }
 
    &__prev {
-      font-weight: 600;
-      font-size: 12px;
-      line-height: 90%;
       margin-bottom: 45px;
       display: flex;
       align-items: center;
       cursor: pointer;
 
       &.disable {
-         color: #d0d0d0;
+         color: $grey4;
 
          .survey__arrow {
-            fill: #d0d0d0;
+            fill: $grey4;
          }
       }
    }
@@ -38,7 +35,7 @@
    &__arrow {
       width: 18px;
       height: 20px;
-      fill: #313131;
+      fill: $black;
       margin-right: 3px;
       transform: rotate(-180deg);
    }
@@ -52,7 +49,7 @@
          content: "";
          width: 60px;
          height: 1px;
-         background: #313131;
+         background: $black;
          left: 18px;
          top: 50%;
          transform: translate(0, -50%);
@@ -70,6 +67,14 @@
       font-size: 20px;
       line-height: 140%;
    }
+
+   &__try-again {
+      @include link;
+      color: $blue2;
+      text-decoration: underline;
+      margin-bottom: 45px;
+      cursor: pointer;
+   }
 }
 
 .form {
@@ -84,20 +89,25 @@
    }
 
    &__title {
-      font-weight: 600;
-      font-size: 20px;
-      line-height: 140%;
+      @include fonts(20px, 28px, 600);
+      color: $black;
    }
 
    &__content {
+      min-height: 330px;
+      height: 100%;
       display: flex;
+      justify-content: space-between;
       flex-direction: column;
+
+      &.no-title {
+         justify-content: flex-end;
+      }
    }
 
    &__wrapper {
       display: flex;
       flex-direction: column;
-      margin-top: 100px;
    }
 
    &__radio-btn {
@@ -119,23 +129,27 @@
    }
 
    &__input {
-      background: #fafafa;
-      border: 1px solid #d0d0d0;
+      background: $white;
+      border: 1px solid $grey2;
       box-sizing: border-box;
       border-radius: 14px;
       height: 55px;
       padding: 10px 25px;
-      color: #313131;
-      font-size: 15px;
-      line-height: 90%;
+      @include fonts(15px, 13.5px, 400);
+      color: $black;
 
       &:not(:first-child) {
          margin-top: 35px;
       }
 
       &::placeholder {
-         color: #999;
+         color: $grey3;
+         @include fonts(15px, 13.5px, 400);
       }
+   }
+
+   &__checkbox-wrapper {
+      padding-top: 15px;
    }
 
    &__text {
@@ -145,53 +159,36 @@
       line-height: 125%;
    }
 
+   &__thank {
+      @include fonts(54px, 62px, 400);
+      color: $blue1;
+      margin: 15px 0 35px;
+   }
+
+   &__thank-text {
+      margin-bottom: 35px;
+      @include fonts(22px, 31px, 400);
+      color: $black;
+
+      span {
+         color: $grey3;
+      }
+   }
+
    &__circle {
       position: absolute;
       width: 18px;
       height: 18px;
-      border: 1px solid #313131;
+      border: 1px solid $black;
       border-radius: 50%;
+      top: 3px;
    }
 
    &__button-next {
-      background: #039ae2;
-      border-radius: 14px;
-      text-transform: uppercase;
-      display: flex;
-      margin: 60px auto 0;
-      align-items: center;
-      text-align: center;
-      justify-content: center;
-      width: 100%;
-      height: 55px;
-      color: #fff;
-      cursor: pointer;
+      @include button;
 
       &.hidden {
          display: none;
       }
    }
-}
-
-input[type="radio"]:checked + .form__circle {
-   border: 1px solid #039ae2;
-   &::after {
-      position: absolute;
-      content: "";
-      background: #039ae2;
-      border-radius: 50%;
-      width: 10px;
-      height: 10px;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-   }
-}
-
-label.error {
-   margin-top: 5px;
-   color: red;
-   font-weight: 400;
-   font-size: 14px;
-   line-height: 90%;
 }

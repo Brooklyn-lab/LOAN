@@ -1,27 +1,5 @@
 .about {
-   &__body {
-      position: relative;
-
-      &::before {
-         position: absolute;
-         content: url("../img/ellipse-blue.png");
-         left: -200px;
-         top: 0;
-         z-index: -1;
-         width: 640px;
-         height: 640px;
-      }
-
-      &::after {
-         position: absolute;
-         content: url("../img/ellipse-green.png");
-         right: 150px;
-         bottom: 100px;
-         z-index: -1;
-         width: 640px;
-         height: 640px;
-      }
-   }
+   padding: 100px 0;
 
    &__title {
       &::before {
@@ -37,6 +15,10 @@
 
    &__brand {
       color: #999;
+   }
+
+   &__wrapper {
+      background: url("../img/bg.png") no-repeat center/cover;
    }
 
    &__cards {

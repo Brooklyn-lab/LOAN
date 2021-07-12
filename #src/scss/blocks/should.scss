@@ -1,6 +1,9 @@
 .should {
-   &__body {
-   }
+   padding: 100px 0;
+   background-image: url("../img/bg2.png");
+   background-repeat: no-repeat;
+   background-position: 50% 50%;
+   background-size: contain;
 
    &__title {
       &::before {

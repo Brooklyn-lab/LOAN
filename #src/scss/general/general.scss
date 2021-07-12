@@ -59,6 +59,10 @@ img {
   height: auto;
 }
 
+input {
+  cursor: pointer;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus input:-webkit-autofill,
@@ -97,20 +101,10 @@ textarea {
 
   &:focus-visible {
     outline: none;
-    border: 1px solid $white2;
+    border: 1px solid $grey2;
     color: $black;
   }
 }
-
-label {
-  cursor: pointer;
-}
-
-label.error {
-  margin-top: 5px;
-  color: $red;
-}
-
 .checkbox {
   position: relative;
   cursor: pointer;
@@ -120,32 +114,63 @@ label.error {
     bottom: 29%;
     opacity: 0;
     position: absolute;
-    z-index: 999;
+    z-index: 100;
     width: 100px;
     height: 20px;
   }
 
   &__box {
     position: absolute;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     border: 1px solid $black;
     border-radius: 5px;
-    margin-top: 6px;
+    margin-top: 25px;
   }
 
   &__text {
-    @include content-text;
-    color: $black;
-    padding-left: 24px;
+    @include fonts(14px, 16px, 400);
+    color: $black2;
+    padding-left: 30px;
     display: inline-block;
     text-align: initial;
+    margin-top: 20px;
   }
 }
 
 input[type="checkbox"]:checked + .checkbox__box {
-  background: url("../img/check.png") no-repeat center;
+  background: url("../img/check.svg") no-repeat center/contain;
   border: 1px solid $blue1;
+}
+
+input[type="radio"]:checked + .form__circle {
+  border: 1px solid $blue1;
+
+  &::after {
+    position: absolute;
+    content: "";
+    background: $blue1;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.hide li:not(:first-child){
+  display: none;
+}
+
+label {
+  cursor: pointer;
+}
+
+label.error {
+  margin-top: 5px;
+  color: $red;
+  @include fonts(14px, 16px, 400);
 }
 
 $minWidth: 320px;
@@ -233,5 +258,27 @@ $md4: 479.98;
     color: $white;
     background: $blue1;
     border: 1px solid transparent;
+  }
+}
+
+.iti.iti--allow-dropdown {
+  margin-top: 35px;
+
+  input {
+    width: 100%;
+  }
+}
+
+.iti__country-list {
+  z-index: 200;
+}
+
+.iti__flag {
+  background-image: url("../img/flags.png");
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .iti__flag {
+    background-image: url("../img/flags@2x.png");
   }
 }

@@ -1,0 +1,36 @@
+.policy {
+   color: $black;
+
+   &__body {
+      max-width: 760px;
+      margin: 130px 0 160px;
+   }
+
+   &__title {
+      @include fonts(64px, 57.6px, 500);
+      color: $blue2;
+      margin-bottom: 80px;
+   }
+
+   &__text {
+      @include fonts(18px, 25px, 400);
+
+      &:not(:last-child) {
+         margin-bottom: 25px;
+      }
+   }
+
+   &__wrapper {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      align-items: flex-start;
+   }
+
+   &__subtitle {
+      @include fonts(30px, 36px, 400);
+      margin-bottom: 30px;
+      text-transform: uppercase;
+   }
+}
