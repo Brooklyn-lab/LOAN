@@ -1,14 +1,14 @@
 <?php
 header("Content-Type: text/html; charset=utf-8");
-$personalized = htmlspecialchars($_POST["data.personalized"]);
-$name = htmlspecialchars($_POST["data.name"]);
-$idNumber = htmlspecialchars($_POST["data.idNumber"]);
-$birthDate = htmlspecialchars($_POST["data.birthDate"]);
-$credits = htmlspecialchars($_POST["data.credits"]);
-$employment = htmlspecialchars($_POST["data.employment"]);
-$preTax = htmlspecialchars($_POST["data.preTax"]);
-$email = htmlspecialchars($_POST["data.email"]);
-$telephone = htmlspecialchars($_POST["data.telephone"]);
+$personalized = htmlspecialchars($_POST["personalized"]);
+$name = htmlspecialchars($_POST["name"]);
+$idNumber = htmlspecialchars($_POST["idNumber"]);
+$birthDate = htmlspecialchars($_POST["birthDate"]);
+$credits = htmlspecialchars($_POST["credits"]);
+$employment = htmlspecialchars($_POST["employment"]);
+$preTax = htmlspecialchars($_POST["preTax"]);
+$email = htmlspecialchars($_POST["email"]);
+$telephone = htmlspecialchars($_POST["telephone"]);
 
 $refferer = getenv('HTTP_REFERER');
 $date=date("d.m.y"); // число.месяц.год  
