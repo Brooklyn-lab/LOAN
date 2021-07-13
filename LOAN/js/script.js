@@ -421,6 +421,7 @@ jQuery(document).ready(function () {
             data.emailValue = inputValue('email');
             data.telephoneValue = inputValue('telephone');
          })()
+         $(this).parent('form').submit();
          countUp()
          formContent.html(step8())
          buttonPrev.hide()
@@ -485,6 +486,8 @@ jQuery(document).ready(function () {
          }
       }
    })
+
+   axios.post('/endpoint', { personalized: data.personalizedValue, name: data.nameValue, lastName: data.lastNameValue, idNumber: data.idNumberValue, birthDate: data.birthDateValue, credits: data.creditsValue, employment: data.employmentValue, preTax: data.preTaxValue, email: data.emailValue, telephone: data.telephoneValue, })
 
 });
 
