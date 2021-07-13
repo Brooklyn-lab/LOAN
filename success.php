@@ -1,16 +1,14 @@
 <?php
 header("Content-Type: text/html; charset=utf-8");
-$name = htmlspecialchars($_POST["name"]);
-$company = htmlspecialchars($_POST["company"]);
-$email = htmlspecialchars($_POST["email"]);
-$job = htmlspecialchars($_POST["job"]);
-$telegram = htmlspecialchars($_POST["telegram"]);
-$skype = htmlspecialchars($_POST["skype"]);
-$textarea = htmlspecialchars($_POST["subject"]);
-$check = is_array($_POST['check']) ? $_POST['check'] : array();
-$check = implode (', ', $check );
-
-$radio = htmlspecialchars($_POST["radio"]);
+$personalized = htmlspecialchars($_POST["data.personalized"]);
+$name = htmlspecialchars($_POST["data.name"]);
+$idNumber = htmlspecialchars($_POST["data.idNumber"]);
+$birthDate = htmlspecialchars($_POST["data.birthDate"]);
+$credits = htmlspecialchars($_POST["data.credits"]);
+$employment = htmlspecialchars($_POST["data.employment"]);
+$preTax = htmlspecialchars($_POST["data.preTax"]);
+$email = htmlspecialchars($_POST["data.email"]);
+$telephone = htmlspecialchars($_POST["data.telephone"]);
 
 $refferer = getenv('HTTP_REFERER');
 $date=date("d.m.y"); // число.месяц.год  
@@ -50,7 +48,7 @@ $time=date("H:i"); // часы:минуты:секунды
 
 $f = fopen("leads.xls", "a+");
 fwrite($f," <tr>");    
-fwrite($f," <td>$name</td> <td>$company</td> <td>$email</td> <td>$job</td> <td>$telegram</td> <td>$skype</td> <td>$textarea</td> <td>$check</td> <td>$date / $time</td>");   
+fwrite($f," <td>$personalized</td> <td>$name</td> <td>$lastName</td> <td>$idNumber</td> <td>$birthDate</td> <td>$credits</td> <td>$employment</td> <td>$preTax</td> <td>$email</td> <td>$telephone</td> <td>$date / $time</td>");   
 fwrite($f," <td>$refferer</td>");    
 fwrite($f," </tr>");  
 fwrite($f,"\n ");    
