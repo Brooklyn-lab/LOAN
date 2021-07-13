@@ -4,8 +4,7 @@ $(window).on('load', function () {
 
 jQuery(document).ready(function () {
 
-   //----Format Webp---------
-
+   //----Format Webp---------ъ
    function testWebP(callback) {
       let webP = new Image();
       webP.onload = webP.onerror = function () {
@@ -21,7 +20,6 @@ jQuery(document).ready(function () {
    });
 
    //--------- ACCORDION -------------------------
-
    $(".accordion__header").click(function () {
       $(this)
          .toggleClass("show")
@@ -35,7 +33,6 @@ jQuery(document).ready(function () {
    });
 
    // -------------------------------------------------
-
    $('a[href*="#"]').on('click', function (e) {
       e.preventDefault();
 
@@ -49,7 +46,6 @@ jQuery(document).ready(function () {
    });
 
    // ----------- FORM --------------------------------
-
    const form = $('.form');
    const countNumber = $('#progresNumber');
    const buttonNext = $('.form__button-next');
@@ -73,6 +69,30 @@ jQuery(document).ready(function () {
 
    buttonReset.hide();
 
+   // сброс формы
+   buttonReset.click(function () {
+      data = {
+         personalizedValue = '',
+         nameValue = '',
+         lastNameValue = '',
+         idNumberValue = '',
+         birthDateValue = '',
+         creditsValue = '',
+         employmentValue = '',
+         preTaxValue = '',
+         emailValue = '',
+         telephoneValue = '',
+      }
+      formContent.html(step1())
+      steps = 1;
+      countNumber.text('1');
+      buttonPrev.show()
+      buttonPrev.addClass('disable')
+      buttonReset.hide()
+      buttonNext.show()
+   })
+
+   // валидация формы
    $.validator.addMethod(
       "regex",
       function (value, element, regexp) {
@@ -82,16 +102,7 @@ jQuery(document).ready(function () {
       "Please check your input."
    );
 
-   buttonReset.click(function () {
-      formContent.html(step1())
-      steps = 1;
-      buttonPrev.show()
-      buttonReset.hide()
-      buttonNext.show()
-   })
-
    function valEl(el) {
-
       el.validate({
          rules: {
             name: {
@@ -121,54 +132,6 @@ jQuery(document).ready(function () {
                email: true
             }
          },
-
-         // Начинаем проверку id="" формы
-         submitHandler: function (form) {
-            $('.preloader').fadeIn();
-            var $form = $(form);
-            var $formId = $(form).attr('id');
-            switch ($formId) {
-               // Если у формы id="goToNewPage" - делаем:
-               case 'goToNewPage':
-                  $.ajax({
-                     type: 'POST',
-                     url: $form.attr('action'),
-                     data: $form.serialize(),
-                  })
-                     .always(function (response) {
-                        //ссылка на страницу "спасибо" - редирект
-                        location.href = 'https://wayup.in/lm/landing-page-marathon/success';
-                        //отправка целей в Я.Метрику и Google Analytics
-                        ga('send', 'event', 'masterklass7', 'register');
-                        yaCounter27714603.reachGoal('lm17lead');
-                     });
-                  break;
-               // Если у формы id="popupResult" - делаем:
-               case 'popupResult':
-                  $.ajax({
-                     type: 'POST',
-                     url: $form.attr('action'),
-                     data: $form.serialize(),
-                  })
-                     .always(function (response) {
-                        setTimeout(function () {
-                           $('.preloader').fadeOut();
-                           $form.trigger('reset');
-                        }, 400);
-                        // setTimeout(function () {
-                        //    $('#overlay').fadeIn();
-
-                        //    //строки для остлеживания целей в Я.Метрике и Google Analytics
-                        // }, 1100);
-                        // $('#overlay').on('click', function (e) {
-                        //    $(this).fadeOut();
-                        // });
-
-                     });
-                  break;
-            }
-            return false;
-         }
       })
    }
 
@@ -177,14 +140,11 @@ jQuery(document).ready(function () {
       valEl($(this));
    });
 
+   // проверяем совпадения data-value и добавляем checked
    const addCheckInput = function () {
       let allInputs = $('.form__wrapper').find('input');
       $.each(allInputs, function (index, value) {
-         if ($(this).attr('data-value') == data.personalizedValue) {
-            $(this).attr('checked', '')
-         } else if ($(this).attr('data-value') == data.creditsValue) {
-            $(this).attr('checked', '')
-         } else if ($(this).attr('data-value') == data.employmentValue) {
+         if ($(this).attr('data-value') == data.personalizedValue || $(this).attr('data-value') == data.creditsValue || $(this).attr('data-value') == data.employmentValue) {
             $(this).attr('checked', '')
          }
       })
@@ -358,17 +318,25 @@ jQuery(document).ready(function () {
       formContent.html(step1())
    }
 
+   // флаг страны для input type tel
    const country = () => {
       $("#phone").intlTelInput({
          nationalMode: false,
-         utilsScript: '/libs/utils.min.js'
+         initialCountry: "auto",
+         geoIpLookup: function (success, failure) {
+            $.get("https://ipinfo.io/?token=63fd763951a2fb", function () { }, "jsonp").always(function (resp) {
+               var countryCode = (resp && resp.country) ? resp.country : "us";
+               success(countryCode);
+            });
+         },
+         utilsScript: './libs/utils.min.js'
       });
    }
 
    let inputValue = (name) => $(`input[name=${name}]`).val();
    let inputCheckedValue = (name) => $(`input[name=${name}]:checked`).attr('data-value');
    let inputCheckedLength = (name) => $(`input[name=${name}]:checked`).length != 0;
-   let inputValueLength = (name) => $(`input[name=${name}]`).val().length != 0;
+   let inputValueLength = (name) => $(`input[name=${name}]`).val().length > 2;
 
    // По клику показывать степы
    buttonNext.click(function (event) {
@@ -398,22 +366,23 @@ jQuery(document).ready(function () {
          })()
          countUp()
          formContent.html(step4())
+         addCheckInput()
          formContent.toggleClass('no-title')
       } else if (steps === 4 && inputCheckedLength('credits')) {
          (() => data.creditsValue = inputCheckedValue('credits'))()
          countUp()
          formContent.html(step5())
+         addCheckInput()
       } else if (steps === 5 && inputCheckedLength('employment')) {
          (() => data.employmentValue = inputCheckedValue('employment'))()
          countUp()
          formContent.html(step6())
          $(`input[name=preTax]`).val(`${data.preTaxValue}`)
-      } else if (steps === 6 && inputValueLength('preTax')) {
+      } else if (steps === 6 && $('input[name=preTax]').val().length != 0) {
          (() => data.preTaxValue = inputValue('preTax'))()
          countUp()
          formContent.html(step7())
          country()
-         // $('#phone').mask('+9 (999) 999-99-99')
          $(`input[name=email]`).val(`${data.emailValue}`)
          $(`input[name=telephone]`).val(`${data.telephoneValue}`)
       } else if (steps === 7 && inputValueLength('email') && inputValueLength('telephone') && inputCheckedLength('checkbox1') && inputCheckedLength('checkbox2')) {
@@ -421,7 +390,7 @@ jQuery(document).ready(function () {
             data.emailValue = inputValue('email');
             data.telephoneValue = inputValue('telephone');
          })()
-         $(this).parent('form').submit();
+         submitForm()
          countUp()
          formContent.html(step8())
          buttonPrev.hide()
@@ -430,6 +399,7 @@ jQuery(document).ready(function () {
       }
    })
 
+   // по клику возвращает контент и счетчик степов
    buttonPrev.click(function (event) {
       event.preventDefault();
 
@@ -487,5 +457,30 @@ jQuery(document).ready(function () {
       }
    })
 
+   // отпраква формы 
+   const submitForm = () => {
+      $('.preloader').fadeIn();
+      $.ajax({
+         url: './success.php',
+         type: 'POST',
+         data: {
+            personalized: data.personalizedValue,
+            name: data.nameValue,
+            lastName: data.lastNameValue,
+            idNumber: data.idNumberValue,
+            birthDate: data.birthDateValue,
+            credits: data.creditsValue,
+            employment: data.employment,
+            preTax: data.preTaxValue,
+            email: data.emailValue,
+            telephone: data.telephoneValue,
+         }
+      }).always(function (response) {
+         setTimeout(function () {
+            $('.preloader').fadeOut();
+            $('.form').trigger('reset');
+         }, 400);
+      })
+   }
 });
 
