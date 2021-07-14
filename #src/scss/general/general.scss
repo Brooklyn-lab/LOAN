@@ -84,6 +84,16 @@ select:-webkit-autofill:focus {
   // );
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 input,
 textarea {
   border-radius: 50px;
@@ -159,7 +169,7 @@ input[type="radio"]:checked + .form__circle {
   }
 }
 
-.hide li:not(:first-child){
+.hide li:not(:first-child) {
   display: none;
 }
 

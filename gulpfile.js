@@ -11,6 +11,7 @@ let path = {
     img: project_folder + '/img/',
     fonts: project_folder + '/fonts/',
     libs: project_folder + '/libs/',
+    css_libs: project_folder + '/css_libs/',
   },
   src: {
     html: [source_folder + '/*.html', '!' + source_folder + '/_*.html'],
@@ -19,6 +20,7 @@ let path = {
     img: source_folder + '/img/**/*.{jpg,png,svg,gif,ico,webp,jpeg}',
     fonts: source_folder + '/fonts/*.ttf',
     libs: source_folder + '/libs/*.js',
+    css_libs: source_folder + '/css_libs/*.css',
   },
   watch: {
     html: source_folder + '/**/*.html',
@@ -156,6 +158,17 @@ function libs() {
     .pipe(browsersync.stream());
 }
 
+function css_libs() {
+  return src(path.src.css_libs)
+    .pipe(
+      rename({
+        extname: '.min.css',
+      }),
+    )
+    .pipe(dest(path.build.css_libs))
+    .pipe(browsersync.stream());
+}
+
 function fonts(params) {
   src(path.src.fonts).pipe(ttf2woff()).pipe(dest(path.build.fonts));
   return src(path.src.fonts).pipe(ttf2woff2()).pipe(dest(path.build.fonts));
@@ -211,11 +224,12 @@ function clean(params) {
 
 let build = gulp.series(
   clean,
-  gulp.parallel(js, libs, css, html, fonts, images, sprite),
+  gulp.parallel(js, libs, css_libs, css, html, fonts, images, sprite),
   fontsStyle,
 );
 let watch = gulp.parallel(build, watchFiles, browserSync);
 
+exports.css_libs = css_libs;
 exports.sprite = sprite;
 exports.libs = libs;
 exports.images = images;
