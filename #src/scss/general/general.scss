@@ -292,3 +292,10 @@ $md4: 479.98;
     background-image: url("../img/flags@2x.png");
   }
 }
+
+#error {
+  color: $red;
+  @include fonts(11px, 16px, 400);
+  position: absolute;
+  bottom: -15px;
+}

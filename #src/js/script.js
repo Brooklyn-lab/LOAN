@@ -182,7 +182,7 @@ jQuery(document).ready(function () {
       <p class="survey__title">Request your personalized loan-proposal</p>
       <div class='form__wrapper'>
          <label for="one-btn" class="form__radio-btn">
-            <input type="radio" name='personalized' id="one-btn" data-value='5'>
+            <input type="radio" name='personalized' id="one-btn" data-value='5' required>
             <span class="form__circle"></span>
             <span class="form__text">Less than €5,000</span>
          </label>
@@ -196,6 +196,7 @@ jQuery(document).ready(function () {
             <span class="form__circle"></span>
             <span class="form__text">More than €25,000</span>
          </label>
+         <span id='error'></span>
       </div>
    `
 
@@ -205,6 +206,7 @@ jQuery(document).ready(function () {
       <div class='form__wrapper'>
          <input type="text" name='name' placeholder='First name' class='form__input' require>
          <input type="text" name='lastName' placeholder='Last name' class='form__input' require>
+         <span id='error'></span>
       </div>
    `
 
@@ -213,6 +215,7 @@ jQuery(document).ready(function () {
          <div class='form__wrapper'>
             <input id='idNumber' type="number" name='idNumber' placeholder='ID-number' class='form__input' require>
             <input type="text" id='date' name='birthDate' placeholder='Date of birth' class='form__input' require>
+            <span id='error'></span>
          </div>
       `
 
@@ -240,6 +243,7 @@ jQuery(document).ready(function () {
                <span class="form__circle"></span>
                <span class="form__text">Poor (0-639)</span>
             </label>
+            <span id='error'></span>
          </div>
       `
 
@@ -272,6 +276,7 @@ jQuery(document).ready(function () {
                <span class="form__circle"></span>
                <span class="form__text">Other</span>
             </label>
+            <span id='error'></span>
          </div>   
       `
 
@@ -280,6 +285,7 @@ jQuery(document).ready(function () {
          <p class="survey__title">What’s your yearly pre-tax income?</p>
          <div class='form__wrapper'>
             <input id='preTax' type="number" name='preTax' placeholder='€ 90.000' class='form__input' require> 
+            <span id='error'></span>
          </div>
       `
 
@@ -303,6 +309,7 @@ jQuery(document).ready(function () {
                   <span class="checkbox__text">I consent to receive communications, and offers of products and services from Company</span>
                </label>
             </div>
+            <span id='error'></span>
          </div>
       `
 
@@ -338,9 +345,28 @@ jQuery(document).ready(function () {
    let inputCheckedLength = (name) => $(`input[name=${name}]:checked`).length != 0;
    let inputValueLength = (name) => $(`input[name=${name}]`).val().length > 2;
 
+   // -------- Валидация ---------------
+   const errorMessage = () => {
+      $('.form').addClass('error')
+
+      if ($('form').hasClass('error')) {
+         $('#error').text('This field is required.')
+      }
+
+      $('input[type=radio]').on('change', function () {
+         $('form').removeClass('error')
+         $('#error').text('');
+      })
+
+      $('input').on('change', function () {
+         $('#error').text('');
+      })
+   }
+
    // По клику показывать степы
    buttonNext.click(function (event) {
       event.preventDefault();
+      errorMessage()
 
       if (steps === 1 && inputCheckedLength('personalized')) {
          (() => data.personalizedValue = inputCheckedValue('personalized'))();

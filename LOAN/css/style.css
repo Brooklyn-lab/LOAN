@@ -351,6 +351,15 @@ label.error {
   background-image: url("../img/flags.png");
 }
 
+#error {
+  color: #fe7a7a;
+  font-size: 11px;
+  line-height: 145.45455%;
+  font-weight: 400;
+  position: absolute;
+  bottom: -15px;
+}
+
 .preloader {
   position: fixed;
   left: 0;
@@ -984,6 +993,7 @@ i:after {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  position: relative;
 }
 
 .form__radio-btn {
