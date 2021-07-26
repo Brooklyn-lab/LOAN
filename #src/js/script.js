@@ -347,14 +347,14 @@ jQuery(document).ready(function () {
 
    // -------- Валидация ---------------
    const errorMessage = () => {
-      $('.form').addClass('error')
+      form.addClass('error')
 
-      if ($('form').hasClass('error')) {
+      if (form.hasClass('error')) {
          $('#error').text('This field is required.')
       }
 
       $('input[type=radio]').on('change', function () {
-         $('form').removeClass('error')
+         form.removeClass('error')
          $('#error').text('');
       })
 
